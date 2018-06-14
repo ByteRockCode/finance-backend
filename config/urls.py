@@ -14,6 +14,7 @@ from .views import index
 
 urlpatterns = [
     path('', index, name='index'),
+    path('', include('users.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
     path('admin/', admin.site.urls),
     path('graphql/', csrf_exempt(GraphQLView.as_view(graphiql=settings.DEBUG))),

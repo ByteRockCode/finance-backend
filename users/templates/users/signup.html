@@ -1,0 +1,29 @@
+{% extends 'index.html' %}
+
+
+{% load bootstrap4 %}
+
+
+{% block content %}
+
+    <div class="container-fluid">
+
+        <h1 class="text-center"><a href="{% url 'index' %}">ByteRock Finance</a></h1>
+
+        <br>
+
+        <form method="post">
+            {% csrf_token %}
+
+            {% bootstrap_form form show_label=False %}
+
+            <br>
+
+            <button class="btn btn-block btn-dark" type="submit">regístrate</button>
+            <a class="btn btn-block btn-outline-dark" href="{% url 'login' %}">Iniciar sesión</a>
+
+        </form>
+
+    </div>
+
+{% endblock %}

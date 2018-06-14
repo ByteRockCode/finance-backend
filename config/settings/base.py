@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     'graphene_django',
     'raven.contrib.django.raven_compat',
     'bootstrap4',
+
+    'users',
 ]
 
 GRAPHENE = {
