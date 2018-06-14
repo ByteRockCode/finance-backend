@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+
+
+{% load humanize %}
+{% load l10n %}
+
+
+{% block title %}Gastos{% endblock %}
+
+
+{% block menu %}
+    <ul class="navbar-nav mr-auto">
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                {{ month|date:'Y' }}
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item{% if month.year == 2017 %} active{% endif %}" href="{% url 'expense-list' '2017' month.month %}">2017</a>
+                <a class="dropdown-item{% if month.year == 2018 %} active{% endif %}" href="{% url 'expense-list' '2018' month.month %}">2018</a>
+                <a class="dropdown-item{% if month.year == 2019 %} active{% endif %}" href="{% url 'expense-list' '2019' month.month %}">2019</a>
+                <a class="dropdown-item{% if month.year == 2020 %} active{% endif %}" href="{% url 'expense-list' '2020' month.month %}">2020</a>
+            </div>
+        </li>
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                {{ month|date:'M' }}
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item{% if month.month == 01 %} active{% endif %}" href="{% url 'expense-list' month.year '01' %}">enero</a>
+                <a class="dropdown-item{% if month.month == 02 %} active{% endif %}" href="{% url 'expense-list' month.year '02' %}">febrero</a>
+                <a class="dropdown-item{% if month.month == 03 %} active{% endif %}" href="{% url 'expense-list' month.year '03' %}">marzo</a>
+                <a class="dropdown-item{% if month.month == 04 %} active{% endif %}" href="{% url 'expense-list' month.year '04' %}">abril</a>
+                <a class="dropdown-item{% if month.month == 05 %} active{% endif %}" href="{% url 'expense-list' month.year '05' %}">mayo</a>
+                <a class="dropdown-item{% if month.month == 06 %} active{% endif %}" href="{% url 'expense-list' month.year '06' %}">junio</a>
+                <a class="dropdown-item{% if month.month == 07 %} active{% endif %}" href="{% url 'expense-list' month.year '07' %}">julio</a>
+                <a class="dropdown-item{% if month.month == 08 %} active{% endif %}" href="{% url 'expense-list' month.year '08' %}">agosto</a>
+                <a class="dropdown-item{% if month.month == 09 %} active{% endif %}" href="{% url 'expense-list' month.year '09' %}">septiembre</a>
+                <a class="dropdown-item{% if month.month == 10 %} active{% endif %}" href="{% url 'expense-list' month.year '10' %}">octubre</a>
+                <a class="dropdown-item{% if month.month == 11 %} active{% endif %}" href="{% url 'expense-list' month.year '11' %}">noviembre</a>
+                <a class="dropdown-item{% if month.month == 12 %} active{% endif %}" href="{% url 'expense-list' month.year '12' %}">diciembre</a>
+            </div>
+        </li>
+    </ul>
+
+    <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+            <a href="{% url 'expense-create' month.year month.month %}" class="btn btn-outline-success btn-sm">crear</a>
+        </li>
+    </ul>
+{% endblock menu %}
+
+
+{% block content %}
+
+    <div class="d-flex">
+
+        <div class="w-100 p-1 text-center">
+            <div>Realizado</div>
+            <div class="font-weight-bold{% if summary.amount_accomplished > 0 %} text-success{% endif %}" scope="col">${{ summary.amount_accomplished|default:0|intcomma }}</div>
+        </div>
+        <div class="w-100 p-1 text-center">
+            <div>Faltante</div>
+            <div class="font-weight-bold{% if summary.amount_not_accomplished > 0 %} text-danger{% endif %}" scope="col">${{ summary.amount_not_accomplished|default:0|intcomma }}</div>
+        </div>
+        <div class="w-100 p-1 text-center">
+            <div>Total</div>
+            <div class="font-weight-bold" scope="col">${{ summary.amount_total|default:0|intcomma }}</div>
+        </div>
+
+    </div>
+
+    <div class="list-group list-group-flush">
+        {% for expense in expenses %}
+            <a class="list-group-item list-group-item-action py-2{% if expense.is_accomplished %} text-black-50{% endif %}" href="{{ expense.get_absolute_url }}" data-id="{{ expense.id }}">
+                <div class="d-flex justify-content-between">
+                    <div class="font-weight-bold">{{ expense.description }}</div>
+                    <small>
+                        {% if expense.is_accomplished %}
+                            <span class="fa fa-check text-success"></span>
+                        {% else %}
+                            <span class="fa fa-times text-danger"></span>
+                        {% endif %}
+                    </small>
+                </div>
+                <small class="text-black-50 float-right">#{{ forloop.counter }}</small>
+                <div>${{ expense.amount|intcomma }}</div>
+            </a>
+        {% empty %}
+            <i class="far fa-meh"></i>
+
+            <p class="h3 text-secondary text-center p-2 pt-5">¿Como piensas gastar tu dinero este mes?</p>
+            <p class="display-4 text-secondary text-center pt-5">
+                <a href="{% url 'expense-create' month.year month.month %}" class="btn btn-success btn-sm">comenzar</a>
+            </p>
+            <p class="text-secondary text-center p-1">Registra tu primer gasto</p>
+        {% endfor %}
+    </div>
+
+{% endblock content %}

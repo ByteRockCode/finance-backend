@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+
+
+{% load humanize %}
+{% load l10n %}
+
+
+{% block title %}Gastos{% endblock %}
+
+
+{% block menu %}
+    <ul class="navbar-nav mr-auto">
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                2018
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="#">2017</a>
+                <a class="dropdown-item" href="#">2018</a>
+                <a class="dropdown-item" href="#">2019</a>
+                <a class="dropdown-item" href="#">2020</a>
+            </div>
+        </li>
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                jun
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="#">enero</a>
+                <a class="dropdown-item" href="#">febrero</a>
+                <a class="dropdown-item" href="#">marzo</a>
+                <a class="dropdown-item" href="#">mayo</a>
+                <a class="dropdown-item" href="#">junio</a>
+                <a class="dropdown-item" href="#">julio</a>
+                <a class="dropdown-item" href="#">agosto</a>
+                <a class="dropdown-item" href="#">septiembre</a>
+                <a class="dropdown-item" href="#">octubre</a>
+                <a class="dropdown-item" href="#">noviembre</a>
+                <a class="dropdown-item" href="#">diciembre</a>
+            </div>
+        </li>
+    </ul>
+
+    <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+            <a href="{% url 'expense-create' month.year month.month %}" class="btn btn-outline-success btn-sm">crear</a>
+        </li>
+    </ul>
+{% endblock menu %}
+
+
+{% block content %}
+
+    <div class="d-flex">
+
+        <div class="w-100 p-1 text-center">
+            <div>Realizado</div>
+            <div class="font-weight-bold {% if summary.amount_accomplished > 0 %} text-success{% endif %}" scope="col">${{ summary.amount_accomplished|default:0|intcomma }}</div>
+        </div>
+        <div class="w-100 p-1 text-center">
+            <div>Faltante</div>
+            <div class="font-weight-bold {% if summary.amount_not_accomplished < summary.amount_total %} text-danger{% endif %}" scope="col">${{ summary.amount_not_accomplished|default:0|intcomma }}</div>
+        </div>
+        <div class="w-100 p-1 text-center">
+            <div>Total</div>
+            <div class="font-weight-bold" scope="col">${{ summary.amount_total|default:0|intcomma }}</div>
+        </div>
+
+    </div>
+
+    <div class="list-group list-group-flush">
+            <!-- <a class="list-group-item list-group-item-action flex-column align-items-start py-2" href="{{ expense.get_absolute_url }}" data-id="{{ expense.id }}"> -->
+        {% for expense in expenses %}
+            <a class="list-group-item list-group-item-action py-2" href="{{ expense.get_absolute_url }}" data-id="{{ expense.id }}">
+                <div class="d-flex justify-content-between">
+                    <div class="font-weight-bold">{{ expense.description }}</div>
+                    <small>
+                        {% if expense.is_accomplished %}
+                            <span class="fa fa-check text-success"></span>
+                        {% else %}
+                            <span class="fa fa-times text-danger"></span>
+                        {% endif %}
+                    </small>
+                </div>
+                <small class="text-black-50 float-right">#{{ forloop.counter }}</small>
+                <div>${{ expense.amount|intcomma }}</div>
+            </a>
+        {% empty %}
+            <i class="far fa-meh"></i>
+
+            <p class="h3 text-secondary text-center p-2 pt-5">¿Como piensas gastar tu dinero?</p>
+            <p class="display-4 text-secondary text-center pt-5">
+                <a href="{% url 'expense-create' month.year month.month %}" class="btn btn-success btn-sm">comenzar</a>
+            </p>
+            <p class="text-secondary text-center p-1">Registra tu primer gasto</p>
+        {% endfor %}
+    </div>
+
+{% endblock content %}

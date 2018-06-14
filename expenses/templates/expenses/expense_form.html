@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+
+{% load humanize %}
+{% load l10n %}
+{% load bootstrap4 %}
+
+
+{% block title %}Gastos{% endblock %}
+
+
+{% block menu %}
+    {% if expense.id %}
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item active">
+                <a href="{% url 'expense-delete' expense.id %}" class="btn btn-outline-danger btn-sm">eliminar</a>
+            </li>
+        </ul>
+    {% endif %}
+{% endblock menu %}
+
+
+{% block content %}
+
+    <form class="p-4" method="POST">
+
+        {% csrf_token %}
+
+        {% for error in form.non_field_errors %}
+            <div class="alert alert-danger">{{ error }}</div>
+        {% endfor %}
+
+        <div class="form-group{% if form.description.errors %} is-invalid{% endif %}">
+            <label class="sr-only" for="{{ form.description.auto_id }}">Descripción</label>
+            <input class="form-control{% if form.description.errors %} is-invalid{% endif %}" id="{{ form.description.auto_id }}" name="{{ form.description.html_name }}" placeholder="En que vas a gastar tu dinero" type="text" value="{{ form.description.value|default:'' }}">
+            {% for error in form.description.errors %}
+                <div class="invalid-feedback">{{ error }}</div>
+            {% endfor %}
+        </div>
+
+        <div class="form-group{% if form.amount.errors %} is-invalid{% endif %}">
+            <label class="sr-only" for="{{ form.amount.auto_id }}">Monto</label>
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">$</div>
+                </div>
+                <input class="form-control text-right{% if form.amount.errors %} is-invalid{% endif %}" id="{{ form.amount.auto_id }}" name="{{ form.amount.html_name }}" placeholder="monto" type="number" value="{{ form.amount.value|default:0 }}">
+                {% for error in form.amount.errors %}
+                    <div class="invalid-feedback">{{ error }}</div>
+                {% endfor %}
+            </div>
+
+        </div>
+
+        <div class="form-check">
+            <input {% if form.is_accomplished.value %}checked{% endif %} class="form-check-input" id="{{ form.is_accomplished.auto_id }}" name="{{ form.is_accomplished.html_name }}" type="checkbox">
+            <label class="form-check-label" for="{{ form.is_accomplished.auto_id }}">realizado?</label>
+        </div>
+
+        <br>
+
+        <p>
+            <button class="btn btn-block btn-success">guardar</button>
+            <a href="{% url 'expense-list' month.year month.month %}" class="btn btn-block btn-outline-secondary">cancelar</a>
+        </p>
+    </form>
+
+{% endblock content %}

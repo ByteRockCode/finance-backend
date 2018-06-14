@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+
+{% load humanize %}
+{% load l10n %}
+{% load i18n %}
+
+
+{% block title %}Gastos{% endblock %}
+
+
+{% block content %}
+
+    <form class="p-4" method="post">
+        {% csrf_token %}
+
+        <input type="hidden" value="{{ object.id }}" name="itemsToDelete" />
+
+        <p>El siguiente gasto será eliminado. Estas seguro?</p>
+
+        <div class="alert alert-secondary">{{ expense }}</div>
+
+        <br>
+
+        <p>
+            <button class="btn btn-block btn-danger">eliminar</button>
+            <a href="{{ expense.get_update_url }}" class="btn btn-block btn-outline-secondary">cancelar</a>
+        </p>
+    </form>
+
+{% endblock content %}
