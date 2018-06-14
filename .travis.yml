@@ -1,0 +1,19 @@
+language: python
+python:
+  - 3.6
+install:
+  - pip install pipenv
+  - pipenv install --system --dev
+script:
+  - flake8
+  - coverage run --source='.' --omit=config/settings/development.py,config/wsgi.py manage.py test -v 2 --settings=config.settings.production
+after_success:
+  - coveralls
+deploy:
+  provider: heroku
+  api_key:
+    secure: gDv9Sy9T/clzVQK3xew59uU2f56IsfogYApPat/OC/p+yvE1xN1TirWs5QfD8lO7pxLwNaMf/y3DPlCIPWCU7TFT+gTMC7jkChJk2HyODvp8eYZdhBQVQ0+3nA15O951FPoAcxgeZ6pl+Vs5qC1sV1AtuesKB1DNYwqX9t64BV5gqEwuebZ8QSyIPnEfNuRh40XmM2oSlGw6rifUrgEt3tB/w18X9KPJsQdc22oTkXbGtsi5IgxNtCOmLGPiP+BC5gc6/IBRBO3SLWGTWb9/1A1KCjTzUc5Nce90b+aIiBh8dfPKChor4ObJi51/YutDBebBoBMktuyKUS5DET9m3siKPukDNrL7heuydA2eZexkM4om02G95si4ZZZfMKyvzP8ipTlgHTlK+uJsu5uT5ut1LT3lcZGn9F5GLDGWafEJRAPLdVvcMBkPmZXMbVmOQ2EYfn/o2jsTIfQrWVimsJoK+EebJVn+b9WxPHocUPrgAoKpFenSqin6QuB23NM0KKgrw0f7Gc+fnlVzxRWzFdHRgkhHjYTyZUl6eTKHhbGmwsm6xYPNYgFOfLVpClac1wBK/QnXmVkHxI4wY3L1fIpP9Q6cZdTl5KDCO/tsZ7KuMlEgH5RMbl+N8yQYQQVW35YObXUPKUGY+A1NO5n5EtlOdQEMJfIfqGHfmgauHOI=
+  app: byterock-finance-backend
+  on: master
+  run:
+    - python manage.py migrate

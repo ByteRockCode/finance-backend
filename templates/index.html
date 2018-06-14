@@ -1,0 +1,35 @@
+{% extends 'base/vertical_center.html' %}
+
+
+{% load staticfiles %}
+
+
+{% block styles %}
+    <style>
+        body {
+            background-color: #f33;
+            background-color: #fe9492;
+            background-image: url('{% static 'images/landing.background.jpg' %}');
+            background-size: cover;
+        }
+    </style>
+{% endblock styles %}
+
+
+{% block content %}
+
+    <div class="text-center p-4">
+        <h1>ByteRock Finance</h1>
+
+        <br>
+
+        <p class="lead">Controla tus gastos y elimina tus deudas. Con ByteRock Finance podrás llevar una planificación de como quieres gastar tu dinero. Deja de sentir que el dinero se va de las manos.</p>
+
+        <br>
+
+        <p>
+            <a class="btn btn-lg btn-block btn-outline-dark" href="{% url 'login' %}">iniciar sesión</a>
+        </p>
+    </div>
+
+{% endblock %}

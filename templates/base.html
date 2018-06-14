@@ -1,0 +1,112 @@
+{% extends 'base/skeleton.html' %}
+
+
+{% block head %}
+
+    <title>ByteRock Finance</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <style>
+        .sidebar {
+            background-color: #fff;
+            box-shadow: 0 0 30px #999;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            left: -100%;
+            max-width: 500px;
+            opacity: 0;
+            position: absolute;
+            top: 0;
+            transition: all .75s ease;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        .sidebar.active {
+            left: 0;
+            opacity: 1;
+        }
+
+        .sidebar-close {
+            border: 1px solid white;
+            cursor: pointer;
+            font-size: 2em;
+            font-weight: bold;
+            padding: 0.25rem 0.75rem;
+            text-align: right;
+        }
+
+        .sidebar-header {
+            margin-bottom: auto;
+        }
+
+        .sidebar-content {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .sidebar-footer {
+            margin-top: auto;
+        }
+
+    </style>
+
+{% endblock head %}
+
+
+{% block body %}
+
+    <nav class="navbar navbar-expand navbar-dark bg-dark">
+        <a class="navbar-brand sidebar-open" href="#" data-target="#sidebar"><span class="badge badge-danger p-2">BR</span></a>
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbar">
+            {% block menu %}
+                <ul class="navbar-nav ml-auto">
+                </ul>
+            {% endblock menu %}
+        </div>
+    </nav>
+
+    <sidebar class="sidebar" id="sidebar">
+        <div class="sidebar-close">&times;</div>
+
+        <div class="sidebar-content list-group list-group-flush">
+            <a href="{% url 'expense-redirect' %}" class="list-group-item list-group-item-action">inicio</a>
+            <a href="{% url 'password_change' %}" class="list-group-item list-group-item-action">cambiar contraseña</a>
+        </div>
+
+        <div class="sidebar-footer list-group list-group-flush">
+            <a href="{% url 'logout' %}" class="list-group-item list-group-item-action disabled">cerrar sesión</a>
+        </div>
+    </sidebar>
+
+    {% block content %}{% endblock %}
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/js/bootstrap.min.js"></script>
+
+    <script>
+        $('.sidebar-open').on('click', function(e) {
+            e.preventDefault();
+
+            var target = $(this).data('target');
+
+            $(target).addClass('active');
+            $('body').css('overflow', 'hidden');
+        });
+
+        $('.sidebar-close').on('click', function(e) {
+            e.preventDefault();
+            $(this).parents('.sidebar:first').removeClass('active');
+            $('body').css('overflow', 'visible');
+        });
+    </script>
+
+{% endblock body %}
