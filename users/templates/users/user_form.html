@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+
+{% load bootstrap4 %}
+
+
+{% block content %}
+
+    <form class="p-4" method="post">
+        {% csrf_token %}
+
+        {% bootstrap_form form %}
+
+        <br>
+
+        <button class="btn btn-block btn-success" type="submit">guardar</button>
+        <a class="btn btn-block btn-outline-secondary" href="{% url 'login' %}">cancelar</a>
+
+    </form>
+
+{% endblock %}
