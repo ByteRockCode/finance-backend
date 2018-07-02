@@ -94,6 +94,9 @@ class ExpenseCreateView(LoginRequiredMixin, ExpenseMixin, CreateView):
 class ExpenseDeleteView(LoginRequiredMixin, DeleteView):
     model = Expense
 
+    def get_success_url(self):
+        return self.object.get_list_url()
+
 
 class ExpenseRedirectView(RedirectView):
 
