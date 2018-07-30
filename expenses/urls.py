@@ -29,7 +29,7 @@ urlpatterns = [
     ),
 
     path(
-        '<int:pk>/eliminar',
+        '<int:pk>/eliminar/',
         ExpenseDeleteView.as_view(),
         name='expense-delete',
     ),

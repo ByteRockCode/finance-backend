@@ -25,6 +25,7 @@ coveralls = "*"
 "flake8" = "*"
 pytest = "*"
 pdbpp = "*"
+pytest-django = "*"
 
 [requires]
 python_version = "3.6"

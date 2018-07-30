@@ -1,5 +1,4 @@
 from datetime import date
-from datetime import timedelta
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Sum
@@ -14,6 +13,7 @@ from django.views.generic.dates import _date_from_string
 
 
 from .models import Expense
+from .utils import get_deadline
 
 
 class ExpenseMixin(YearMixin, MonthMixin):
@@ -72,20 +72,9 @@ class ExpenseCreateView(LoginRequiredMixin, ExpenseMixin, CreateView):
 
     def form_valid(self, form):
         form.instance.creator = self.request.user
-        form.instance.deadline = self.get_deadline()
+        form.instance.deadline = get_deadline(self.get_date())
 
         return super().form_valid(form)
-
-    def get_deadline(self):
-        deadline = self.get_date()
-
-        if deadline.month == 12:
-            deadline = deadline.replace(year=deadline.year + 1) - timedelta(days=1)
-
-        else:
-            deadline = deadline.replace(month=deadline.month + 1) - timedelta(days=1)
-
-        return deadline
 
     def get_success_url(self):
         return self.object.get_list_url()

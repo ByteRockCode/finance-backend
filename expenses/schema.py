@@ -15,9 +15,9 @@ class Query(graphene.ObjectType):
         ExpenseObjectType,
         id=graphene.Int(),
     )
-    companies = graphene.List(ExpenseObjectType)
+    expenses = graphene.List(ExpenseObjectType)
 
-    def resolve_companies(self, info):
+    def resolve_expenses(self, info):
         return Expense.objects.all()
 
     def resolve_expense(self, info, **kwargs):

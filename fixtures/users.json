@@ -4,7 +4,7 @@
     "pk": 1,
     "fields": {
         "password": "pbkdf2_sha256$100000$j1mR0VoAQxfL$It/7vIqnpwMLIZr5VD/Jja0kJfqyYLVvOvtmJUe74iU=",
-        "last_login": "2018-03-25T00:22:07Z",
+        "last_login": "2018-06-14T04:10:34.865Z",
         "is_superuser": true,
         "username": "saulhormazabal",
         "first_name": "Sa\u00fal",
@@ -21,8 +21,8 @@
     "model": "auth.user",
     "pk": 2,
     "fields": {
-        "password": "pbkdf2_sha256$100000$j1mR0VoAQxfL$It/7vIqnpwMLIZr5VD/Jja0kJfqyYLVvOvtmJUe74iU=",
-        "last_login": "2018-03-25T00:22:07Z",
+        "password": "pbkdf2_sha256$100000$JuzrMRemmBKV$DwIoQU6Ek0uWgguOvPpfWICDINz7v+XPKMrSzOEKgD8=",
+        "last_login": "2018-06-14T04:41:49.823Z",
         "is_superuser": true,
         "username": "yohanna",
         "first_name": "Yohanna",
@@ -39,7 +39,7 @@
     "model": "auth.user",
     "pk": 3,
     "fields": {
-        "password": "pbkdf2_sha256$100000$NFr2J0JcHpgn$Xb272fuxc5dfrcOE7VlHsNQ08FNgsrGJZ0SGw2kUJJ8=",
+        "password": "pbkdf2_sha256$100000$gacCGfer8Mfw$l6AxQQIifklUblEpkbNSS4iqhFfm8M1fLEoSWQ67veE=",
         "last_login": null,
         "is_superuser": false,
         "username": "juanperez",
