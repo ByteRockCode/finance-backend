@@ -18,20 +18,8 @@ from .utils import get_deadline
 
 class ExpenseMixin(YearMixin, MonthMixin):
 
-    def get_date(self):
-        return _date_from_string(
-            self.get_year(),
-            self.get_year_format(),
-            self.get_month(),
-            self.get_month_format(),
-        )
-
-    def get_context_data(self, *args, **kwargs):
-        context = super(ExpenseMixin, self).get_context_data(*args, **kwargs)
-
-        context['month'] = self.get_date()
-
-        return context
+    def get_queryset(self):
+        return self.model.objects.filter(creator=self.request.user)
 
 
 class ExpenseSummaryMixin:
@@ -76,11 +64,26 @@ class ExpenseCreateView(LoginRequiredMixin, ExpenseMixin, CreateView):
 
         return super().form_valid(form)
 
+    def get_context_data(self, *args, **kwargs):
+        context = super(ExpenseCreateView, self).get_context_data(*args, **kwargs)
+
+        context['month'] = self.get_date()
+
+        return context
+
+    def get_date(self):
+        return _date_from_string(
+            self.get_year(),
+            self.get_year_format(),
+            self.get_month(),
+            self.get_month_format(),
+        )
+
     def get_success_url(self):
         return self.object.get_list_url()
 
 
-class ExpenseDeleteView(LoginRequiredMixin, DeleteView):
+class ExpenseDeleteView(LoginRequiredMixin, ExpenseMixin, DeleteView):
     model = Expense
 
     def get_success_url(self):
@@ -102,7 +105,7 @@ class ExpenseRedirectView(RedirectView):
         return super().get_redirect_url(*args, **kwargs)
 
 
-class ExpenseUpdateView(LoginRequiredMixin, UpdateView):
+class ExpenseUpdateView(LoginRequiredMixin, ExpenseMixin, UpdateView):
     fields = [
         'description',
         'is_accomplished',
